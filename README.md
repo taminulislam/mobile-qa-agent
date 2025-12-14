@@ -2,6 +2,16 @@
 
 A multi-agent system for automated mobile QA testing of the Obsidian app on Android, built with Google's Agent Development Kit (ADK) and Gemini.
 
+---
+
+## Demo Video
+
+[![Watch Demo Video](https://img.shields.io/badge/Watch%20Demo-Click%20Here-red?style=for-the-badge&logo=video)](https://saluki-my.sharepoint.com/:v:/g/personal/taminul_islam_siu_edu/IQC46B7lLo-bTZaWxiecEb0dAXQeOLVHXKWCa53rfUx1gUo?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=VoZaQJ)
+
+**[Click here to watch the demo video showing the agent in action](https://saluki-my.sharepoint.com/:v:/g/personal/taminul_islam_siu_edu/IQC46B7lLo-bTZaWxiecEb0dAXQeOLVHXKWCa53rfUx1gUo?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=VoZaQJ)**
+
+---
+
 ## Overview
 
 This project implements a **Supervisor-Planner-Executor** multi-agent architecture to execute natural language QA test cases on the Obsidian mobile app running in an Android emulator.
@@ -162,10 +172,6 @@ SCREENSHOT_DELAY = 2.0           # Wait time after actions
 ACTION_DELAY = 1.0               # Delay between actions
 ```
 
-## Demo Video
-
-[Link to demo video](YOUR_VIDEO_LINK_HERE)
-
 ## Framework Decision
 
 See [report.md](report.md) for the detailed framework analysis comparing Google ADK vs Simular Agent S3.
@@ -174,10 +180,4 @@ See [report.md](report.md) for the detailed framework analysis comparing Google 
 
 ## Author
 
-**Taminul Islam**  
-QualGent Research Intern Coding Challenge  
-December 2025
-
-## License
-
-This project is licensed under the MIT License.
+**Taminul Islam**
