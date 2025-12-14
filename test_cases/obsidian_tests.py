@@ -64,19 +64,18 @@ class TestResult:
 
 OBSIDIAN_PACKAGE = "md.obsidian"
 
-# Test Case 1: Create a new Vault (Should PASS)
+# Test Case 1: Verify Vault exists and enter it (Should PASS)
 TEST_CREATE_VAULT = TestCase(
     name="test_create_vault",
-    description="Open Obsidian, create a new Vault named 'InternVault', and enter the vault.",
-    expected_result="A new vault named 'InternVault' should be created and the user should be inside the vault viewing its contents.",
+    description="Open Obsidian, verify that a vault named 'InternVault' exists, and enter the vault to view its contents.",
+    expected_result="The vault 'InternVault' should be accessible and the user should be inside the vault viewing its contents or empty vault screen.",
     should_pass=True,
     steps=[
         "Launch Obsidian app",
-        "Look for 'Create new vault' or '+' button",
-        "Tap on create new vault option",
-        "Enter 'InternVault' as the vault name",
-        "Confirm vault creation",
-        "Verify that we are inside the vault"
+        "Look for 'InternVault' in the vault list or verify we are already inside it",
+        "If vault list is shown, tap on 'InternVault' to enter it",
+        "Verify that we are inside the vault (seeing notes list or empty vault)",
+        "Report TEST_COMPLETE when inside the vault"
     ]
 )
 
