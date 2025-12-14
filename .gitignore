@@ -21,7 +21,7 @@ build/
 *.swo
 
 # Project specific
-screenshots/
+
 logs/
 test_results_*.json
 
