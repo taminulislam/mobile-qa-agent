@@ -1,0 +1,16 @@
+# Mobile QA Multi-Agent System Dependencies
+
+# Google ADK for agent orchestration
+google-adk>=1.0.0
+
+# Google Generative AI (Gemini)
+google-generativeai>=0.8.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Image processing
+Pillow>=10.0.0
+
+# Additional utilities
+pathlib2>=2.3.0;python_version<"3.4"
