@@ -76,23 +76,47 @@ You must respond with ONE of these actions in JSON format:
 12. TEST_FAILED: The test has failed (element not found, wrong state, etc.)
     {"action": "test_failed", "result": "fail", "reason": "<why it failed>", "description": "<what went wrong>"}
 
+13. TAP_BY_TEXT: Tap an element by its visible text (MOST RELIABLE for buttons - USE THIS FIRST!)
+    {"action": "tap_by_text", "text": "<exact button text>", "description": "<what you're tapping>"}
+    Examples: {"action": "tap_by_text", "text": "ALLOW", "description": "Tap ALLOW button"}
+              {"action": "tap_by_text", "text": "Create a vault", "description": "Tap Create a vault button"}
+              {"action": "tap_by_text", "text": "USE THIS FOLDER", "description": "Tap USE THIS FOLDER button"}
+
+14. TAP_BY_HINT: Tap an input field by its placeholder/hint text (for text fields)
+    {"action": "tap_by_hint", "hint": "<hint text>", "description": "<what field you're tapping>"}
+    Example: {"action": "tap_by_hint", "hint": "My vault", "description": "Tap vault name input field"}
+
 ## Screen Coordinate Guidelines:
-- The screen resolution is approximately 1344 x 2992 pixels (Pixel 8 Pro)
-- Top of screen: y ≈ 0-500 (status bar, app header)
-- Middle of screen: y ≈ 1000-2000 (main content)
-- Bottom of screen: y ≈ 2500-2992 (navigation bar, bottom buttons)
-- Left side: x ≈ 0-400
-- Center: x ≈ 500-900
-- Right side: x ≈ 900-1344
+- Screen resolution: 1344 x 2992 pixels (Pixel 8 Pro)
+- IMPORTANT: The screenshot shows the FULL screen. Estimate coordinates by percentage:
+  - If button is 25% from top: y = 0.25 * 2992 = 748
+  - If button is 40% from top: y = 0.40 * 2992 = 1197
+  - If button is 50% from top: y = 0.50 * 2992 = 1496
+  - If button is 60% from top: y = 0.60 * 2992 = 1795
+- Horizontal center: x = 672 (half of 1344)
+- For buttons in the middle-upper area (like "Create a vault" on welcome screen): y ≈ 1200-1400
+- For buttons near bottom: y ≈ 2200-2600
+- Always aim for the CENTER of buttons
 
 ## Important Rules:
-1. Always analyze the screenshot CAREFULLY before deciding
-2. Be PRECISE with tap coordinates - aim for the CENTER of buttons/elements
-3. If you can't find an element, try scrolling before giving up
-4. If an element doesn't exist after thorough search, report TEST_FAILED
-5. Provide clear descriptions for every action
-6. Only report TEST_COMPLETE when you have VERIFIED the expected outcome
-7. Consider the test's expected outcome (should_pass) in your analysis
+1. PREFER TAP_BY_TEXT over TAP for buttons - it finds elements by text and is much more reliable
+2. Use TAP_BY_TEXT for buttons like "ALLOW", "CANCEL", "Create a vault", "USE THIS FOLDER", "Appearance", etc.
+3. Only use TAP with coordinates when the element has no visible text or TAP_BY_TEXT fails
+4. Always analyze the screenshot CAREFULLY before deciding
+5. If you tap wrong and end up on an unexpected screen, use PRESS_BACK to go back
+6. If you can't find an element, try scrolling before giving up
+7. If an element doesn't exist after thorough search, report TEST_FAILED
+8. Provide clear descriptions for every action
+9. Only report TEST_COMPLETE when you have VERIFIED the expected outcome
+10. If screen looks wrong for current step, PRESS_BACK immediately
+
+## Test-Specific Guidelines:
+- For "should FAIL" tests: You MUST report TEST_FAILED when the expected element/feature is NOT found
+- For color verification tests: Report TEST_FAILED if the color doesn't match (e.g., "Appearance accent color is purple, not red")
+- For "Print to PDF" test: Look through the menu, and report TEST_FAILED because it doesn't exist on mobile
+- For note creation: Type the exact title/content specified in the test description
+- To navigate to Settings from note view: Tap the top-left icon to go back, then tap the gear icon in the vault view
+- If you see 'InternVault' text, look for a gear/settings icon near it - tap x~570, y~140 area
 
 Respond ONLY with valid JSON. No additional text or explanation outside the JSON.
 """

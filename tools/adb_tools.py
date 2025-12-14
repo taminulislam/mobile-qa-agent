@@ -8,8 +8,10 @@ using ADB (Android Debug Bridge) commands.
 import subprocess
 import base64
 import time
+import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict, List
 from config.settings import (
     ADB_PATH, 
     EMULATOR_SERIAL, 
@@ -420,6 +422,300 @@ class ADBTools:
         self._run_shell_command(["uiautomator", "dump", "/sdcard/ui_dump.xml"])
         result = self._run_shell_command(["cat", "/sdcard/ui_dump.xml"])
         return result
+    
+    # ==================== UI Automator Tools ====================
+    
+    def _get_ui_xml(self) -> str:
+        """
+        Dump UI hierarchy and return as XML string.
+        
+        Returns:
+            UI hierarchy XML string
+        """
+        self._run_shell_command(["uiautomator", "dump", "/sdcard/ui_dump.xml"])
+        result = self._run_shell_command(["cat", "/sdcard/ui_dump.xml"])
+        return result
+    
+    def _parse_bounds(self, bounds_str: str) -> Tuple[int, int, int, int]:
+        """
+        Parse bounds string like "[0,0][1344,2992]" into (x1, y1, x2, y2).
+        
+        Args:
+            bounds_str: Bounds string in format "[x1,y1][x2,y2]"
+            
+        Returns:
+            Tuple of (x1, y1, x2, y2)
+        """
+        match = re.findall(r'\[(\d+),(\d+)\]', bounds_str)
+        if len(match) == 2:
+            x1, y1 = int(match[0][0]), int(match[0][1])
+            x2, y2 = int(match[1][0]), int(match[1][1])
+            return x1, y1, x2, y2
+        raise ValueError(f"Could not parse bounds: {bounds_str}")
+    
+    def _get_center(self, bounds: Tuple[int, int, int, int]) -> Tuple[int, int]:
+        """
+        Calculate center coordinates from bounds.
+        
+        Args:
+            bounds: Tuple of (x1, y1, x2, y2)
+            
+        Returns:
+            Tuple of (center_x, center_y)
+        """
+        x1, y1, x2, y2 = bounds
+        return (x1 + x2) // 2, (y1 + y2) // 2
+    
+    def find_element_by_text(self, text: str) -> Optional[Dict]:
+        """
+        Find element by exact text match using UI Automator.
+        
+        Args:
+            text: Exact text to search for
+            
+        Returns:
+            Dict with element info (bounds, center_x, center_y) or None if not found
+        """
+        logger.info(f"Finding element by text: '{text}'")
+        xml_str = self._get_ui_xml()
+        
+        # Search for node elements with matching text and bounds attributes
+        # The attributes may not be adjacent, so we need to match the whole node
+        node_pattern = r'<node[^>]+text="([^"]*)"[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]*/?>|<node[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]+text="([^"]*)"[^>]*/?>'
+        
+        for match in re.finditer(node_pattern, xml_str):
+            # Handle both orderings of text and bounds attributes
+            if match.group(1) is not None:
+                found_text = match.group(1)
+                bounds_str = match.group(2)
+            else:
+                found_text = match.group(4)
+                bounds_str = match.group(3)
+            
+            if found_text == text:
+                try:
+                    bounds = self._parse_bounds(bounds_str)
+                    center_x, center_y = self._get_center(bounds)
+                    logger.info(f"Found element '{text}' at center ({center_x}, {center_y})")
+                    return {
+                        "text": text,
+                        "bounds": bounds,
+                        "bounds_str": bounds_str,
+                        "center_x": center_x,
+                        "center_y": center_y
+                    }
+                except ValueError as e:
+                    logger.warning(f"Failed to parse bounds: {e}")
+        
+        logger.warning(f"Element with text '{text}' not found")
+        return None
+    
+    def find_element_by_text_contains(self, text: str) -> Optional[Dict]:
+        """
+        Find element by partial text match using UI Automator.
+        
+        Args:
+            text: Partial text to search for
+            
+        Returns:
+            Dict with element info (bounds, center_x, center_y) or None if not found
+        """
+        logger.info(f"Finding element containing text: '{text}'")
+        xml_str = self._get_ui_xml()
+        
+        # Search for node elements with text containing search string
+        node_pattern = r'<node[^>]+text="([^"]*)"[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]*/?>|<node[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]+text="([^"]*)"[^>]*/?>'
+        
+        for match in re.finditer(node_pattern, xml_str):
+            # Handle both orderings of text and bounds attributes
+            if match.group(1) is not None:
+                found_text = match.group(1)
+                bounds_str = match.group(2)
+            else:
+                found_text = match.group(4)
+                bounds_str = match.group(3)
+            
+            if found_text and text.lower() in found_text.lower():
+                try:
+                    bounds = self._parse_bounds(bounds_str)
+                    center_x, center_y = self._get_center(bounds)
+                    logger.info(f"Found element '{found_text}' at center ({center_x}, {center_y})")
+                    return {
+                        "text": found_text,
+                        "bounds": bounds,
+                        "bounds_str": bounds_str,
+                        "center_x": center_x,
+                        "center_y": center_y
+                    }
+                except ValueError as e:
+                    logger.warning(f"Failed to parse bounds: {e}")
+        
+        logger.warning(f"Element containing text '{text}' not found")
+        return None
+    
+    def find_element_by_resource_id(self, resource_id: str) -> Optional[Dict]:
+        """
+        Find element by resource-id using UI Automator.
+        
+        Args:
+            resource_id: Resource ID to search for (can be partial)
+            
+        Returns:
+            Dict with element info or None if not found
+        """
+        logger.info(f"Finding element by resource-id: '{resource_id}'")
+        xml_str = self._get_ui_xml()
+        
+        # Search for node elements with matching resource-id
+        node_pattern = r'<node[^>]+resource-id="([^"]*)"[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]*/?>|<node[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]+resource-id="([^"]*)"[^>]*/?>'
+        
+        for match in re.finditer(node_pattern, xml_str):
+            if match.group(1) is not None:
+                found_id = match.group(1)
+                bounds_str = match.group(2)
+            else:
+                found_id = match.group(4)
+                bounds_str = match.group(3)
+            
+            if found_id and resource_id in found_id:
+                try:
+                    bounds = self._parse_bounds(bounds_str)
+                    center_x, center_y = self._get_center(bounds)
+                    logger.info(f"Found element with id '{found_id}' at center ({center_x}, {center_y})")
+                    return {
+                        "resource_id": found_id,
+                        "bounds": bounds,
+                        "bounds_str": bounds_str,
+                        "center_x": center_x,
+                        "center_y": center_y
+                    }
+                except ValueError as e:
+                    logger.warning(f"Failed to parse bounds: {e}")
+        
+        logger.warning(f"Element with resource-id '{resource_id}' not found")
+        return None
+    
+    def tap_element_by_text(self, text: str, exact_match: bool = True) -> str:
+        """
+        Find element by text and tap its center.
+        
+        Args:
+            text: Text to search for
+            exact_match: If True, requires exact match; if False, partial match
+            
+        Returns:
+            Result message
+        """
+        if exact_match:
+            element = self.find_element_by_text(text)
+        else:
+            element = self.find_element_by_text_contains(text)
+        
+        if element:
+            return self.tap(element["center_x"], element["center_y"])
+        else:
+            error_msg = f"Could not find element with text '{text}'"
+            logger.error(error_msg)
+            return error_msg
+    
+    def tap_element_by_text_contains(self, text: str) -> str:
+        """
+        Find element by partial text match and tap its center.
+        
+        Args:
+            text: Partial text to search for
+            
+        Returns:
+            Result message
+        """
+        element = self.find_element_by_text_contains(text)
+        
+        if element:
+            return self.tap(element["center_x"], element["center_y"])
+        else:
+            error_msg = f"Could not find element containing text '{text}'"
+            logger.error(error_msg)
+            return error_msg
+    
+    def find_element_by_hint(self, hint: str) -> Optional[Dict]:
+        """
+        Find element by hint (placeholder) text using UI Automator.
+        
+        Args:
+            hint: Hint text to search for
+            
+        Returns:
+            Dict with element info or None if not found
+        """
+        logger.info(f"Finding element by hint: '{hint}'")
+        xml_str = self._get_ui_xml()
+        
+        # Search for node elements with matching hint
+        node_pattern = r'<node[^>]+hint="([^"]*)"[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]*/?>|<node[^>]+bounds="(\[[^\]]+\]\[[^\]]+\])"[^>]+hint="([^"]*)"[^>]*/?>'
+        
+        for match in re.finditer(node_pattern, xml_str):
+            if match.group(1) is not None:
+                found_hint = match.group(1)
+                bounds_str = match.group(2)
+            else:
+                found_hint = match.group(4)
+                bounds_str = match.group(3)
+            
+            if found_hint and hint.lower() in found_hint.lower():
+                try:
+                    bounds = self._parse_bounds(bounds_str)
+                    center_x, center_y = self._get_center(bounds)
+                    logger.info(f"Found element with hint '{found_hint}' at center ({center_x}, {center_y})")
+                    return {
+                        "hint": found_hint,
+                        "bounds": bounds,
+                        "bounds_str": bounds_str,
+                        "center_x": center_x,
+                        "center_y": center_y
+                    }
+                except ValueError as e:
+                    logger.warning(f"Failed to parse bounds: {e}")
+        
+        logger.warning(f"Element with hint '{hint}' not found")
+        return None
+    
+    def tap_element_by_hint(self, hint: str) -> str:
+        """
+        Find element by hint and tap its center.
+        
+        Args:
+            hint: Hint text to search for
+            
+        Returns:
+            Result message
+        """
+        element = self.find_element_by_hint(hint)
+        
+        if element:
+            return self.tap(element["center_x"], element["center_y"])
+        else:
+            error_msg = f"Could not find element with hint '{hint}'"
+            logger.error(error_msg)
+            return error_msg
+    
+    def tap_element_by_resource_id(self, resource_id: str) -> str:
+        """
+        Find element by resource-id and tap its center.
+        
+        Args:
+            resource_id: Resource ID to search for
+            
+        Returns:
+            Result message
+        """
+        element = self.find_element_by_resource_id(resource_id)
+        
+        if element:
+            return self.tap(element["center_x"], element["center_y"])
+        else:
+            error_msg = f"Could not find element with resource-id '{resource_id}'"
+            logger.error(error_msg)
+            return error_msg
 
 
 # Create tool functions for ADK integration
@@ -453,4 +749,10 @@ def create_adb_tools(device_serial: str = None) -> dict:
         "launch_app": adb.launch_app,
         "close_app": adb.close_app,
         "wait": adb.wait,
+        # UI Automator tools
+        "find_element_by_text": adb.find_element_by_text,
+        "find_element_by_text_contains": adb.find_element_by_text_contains,
+        "find_element_by_resource_id": adb.find_element_by_resource_id,
+        "tap_element_by_text": adb.tap_element_by_text,
+        "tap_element_by_resource_id": adb.tap_element_by_resource_id,
     }

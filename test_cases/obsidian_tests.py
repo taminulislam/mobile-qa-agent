@@ -64,65 +64,65 @@ class TestResult:
 
 OBSIDIAN_PACKAGE = "md.obsidian"
 
-# Test Case 1: Verify Vault exists and enter it (Should PASS)
+# Test Case 1: Create a new Vault (Should PASS)
 TEST_CREATE_VAULT = TestCase(
     name="test_create_vault",
-    description="Open Obsidian, verify that a vault named 'InternVault' exists, and enter the vault to view its contents.",
-    expected_result="The vault 'InternVault' should be accessible and the user should be inside the vault viewing its contents or empty vault screen.",
+    description="Create vault: 1) Tap purple 'Create a vault' 2) Tap purple 'Continue without sync' 3) Clear vault name field, type 'InternVault' 4) Tap purple 'Create a vault' 5) Tap blue 'USE THIS FOLDER' 6) Tap 'ALLOW'. Then verify main vault interface.",
+    expected_result="Vault 'InternVault' created and main Obsidian interface visible (New tab or notes list).",
     should_pass=True,
     steps=[
-        "Launch Obsidian app",
-        "Look for 'InternVault' in the vault list or verify we are already inside it",
-        "If vault list is shown, tap on 'InternVault' to enter it",
-        "Verify that we are inside the vault (seeing notes list or empty vault)",
-        "Report TEST_COMPLETE when inside the vault"
+        "Tap purple 'Create a vault' button",
+        "Tap purple 'Continue without sync' button",
+        "Tap vault name field and clear it",
+        "Type 'InternVault'",
+        "Tap purple 'Create a vault' button",
+        "Tap blue 'USE THIS FOLDER' button",
+        "Tap 'ALLOW' button",
+        "Report TEST_COMPLETE when vault interface visible"
     ]
 )
 
 # Test Case 2: Create a new note (Should PASS)
 TEST_CREATE_NOTE = TestCase(
     name="test_create_note",
-    description="Create a new note titled 'Meeting Notes' and type the text 'Daily Standup' into the body.",
-    expected_result="A new note titled 'Meeting Notes' should exist with 'Daily Standup' as its content.",
+    description="Create a new note titled 'Meeting Notes' with body text 'Daily Standup'. Steps: 1) Tap 'Create new note' or the + icon 2) Type 'Meeting Notes' as the title (first line) 3) Press Enter 4) Type 'Daily Standup' as the body content. Report TEST_COMPLETE when done.",
+    expected_result="A note titled 'Meeting Notes' with body 'Daily Standup' should be created. Report TEST_COMPLETE once the text is typed.",
     should_pass=True,
     steps=[
-        "Ensure we are inside a vault",
-        "Look for new note button (usually '+' or 'New note')",
-        "Tap to create new note",
-        "Enter 'Meeting Notes' as the title",
-        "Tap on the note body area",
-        "Type 'Daily Standup'",
-        "Verify the note content is visible"
+        "Tap the 'Create new note' button or + icon in the vault interface",
+        "Type 'Meeting Notes' as the note title (first line)",
+        "Press Enter to move to the body",
+        "Type 'Daily Standup' as the body content",
+        "Report TEST_COMPLETE when text has been entered"
     ]
 )
 
 # Test Case 3: Verify Appearance tab icon color (Should FAIL)
 TEST_APPEARANCE_ICON_COLOR = TestCase(
     name="test_appearance_icon_red",
-    description="Go to Settings and verify that the 'Appearance' tab icon is the color Red.",
-    expected_result="The test should FAIL because the Appearance icon is monochrome/default theme color, NOT red.",
+    description="Verify Appearance accent color is RED. Steps: 1) Tap top-left icon (x=112, y=240) to go back to file browser 2) Tap the settings gear icon at EXACT coordinates (x=1138, y=280) - this is the purple gear in top-right 3) Tap 'Appearance' text 4) Check 'Accent color' - it is PURPLE, not RED. Report TEST_FAILED.",
+    expected_result="The test should FAIL because the Appearance accent color is purple, NOT red.",
     should_pass=False,
     steps=[
-        "Open Obsidian settings (gear icon or menu)",
-        "Navigate to Settings",
-        "Look for 'Appearance' option",
-        "Examine the icon color of the Appearance tab",
-        "Verify if the icon is RED colored",
-        "Report FAIL because the icon is NOT red (it's monochrome)"
+        "Tap top-left icon at (x=112, y=240) to go back to file browser",
+        "Tap settings gear icon at EXACT (x=1138, y=280)",
+        "Tap 'Appearance' in Settings menu",
+        "Look at 'Accent color' - it is PURPLE, not RED",
+        "Report TEST_FAILED because accent color is NOT red"
     ]
 )
 
 # Test Case 4: Find Print to PDF button (Should FAIL)
 TEST_PRINT_TO_PDF = TestCase(
     name="test_print_to_pdf",
-    description="Find and click the 'Print to PDF' button in the main file menu.",
-    expected_result="The test should FAIL because 'Print to PDF' feature does not exist in the mobile version.",
+    description="Find and click the 'Print to PDF' button in the main file menu. Steps: 1) Tap the hamburger menu (3 horizontal lines) at bottom right 2) Look through the menu options for 'Print to PDF' 3) It does NOT exist in mobile - report TEST_FAILED.",
+    expected_result="The test should FAIL because 'Print to PDF' feature does not exist in the mobile version's menu.",
     should_pass=False,
     steps=[
-        "Open the main menu or file menu",
-        "Look for 'Print to PDF' option",
-        "Search through all available menu items",
-        "Report FAIL when 'Print to PDF' is not found"
+        "Tap the hamburger menu icon (3 horizontal lines) at the bottom right of the screen",
+        "Look through all menu options for 'Print to PDF'",
+        "The option does NOT exist in the mobile version",
+        "Report TEST_FAILED because 'Print to PDF' was not found in the menu"
     ]
 )
 

@@ -114,6 +114,28 @@ class ExecutorAgent:
                 
             elif action_type == "clear_text":
                 result_message = self.adb.clear_text_field()
+            
+            elif action_type == "tap_by_text":
+                text = action.get("text", "")
+                exact_match = action.get("exact_match", True)
+                result_message = self.adb.tap_element_by_text(text, exact_match)
+                if "Could not find" in result_message:
+                    logger.warning(f"Element not found: {text}")
+                    return False, result_message, self.adb.get_screenshot_base64()
+            
+            elif action_type == "tap_by_resource_id":
+                resource_id = action.get("resource_id", "")
+                result_message = self.adb.tap_element_by_resource_id(resource_id)
+                if "Could not find" in result_message:
+                    logger.warning(f"Element not found: {resource_id}")
+                    return False, result_message, self.adb.get_screenshot_base64()
+            
+            elif action_type == "tap_by_hint":
+                hint = action.get("hint", "")
+                result_message = self.adb.tap_element_by_hint(hint)
+                if "Could not find" in result_message:
+                    logger.warning(f"Element not found by hint: {hint}")
+                    return False, result_message, self.adb.get_screenshot_base64()
                 
             elif action_type == "test_complete":
                 result = action.get("result", "pass")

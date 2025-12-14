@@ -36,8 +36,8 @@ SCREEN_HEIGHT = 2992
 
 # Agent Configuration
 MAX_STEPS = 20  # Maximum steps per test case
-SCREENSHOT_DELAY = 1.5  # Seconds to wait after action before screenshot
-ACTION_DELAY = 0.5  # Seconds between actions
+SCREENSHOT_DELAY = 2.0  # Seconds to wait after action before screenshot
+ACTION_DELAY = 1.0  # Seconds between actions (increased for reliability)
 
 # Logging
 LOG_LEVEL = "INFO"
