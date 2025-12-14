@@ -104,5 +104,4 @@ Google ADK provides the ideal balance of multi-agent capabilities, ease of use, 
 ---
 
 **Author**: Taminul Islam  
-**Date**: December 2025  
-**Project**: QualGent Research Intern Coding Challenge
+**Date**: 14th December 2025  
