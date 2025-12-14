@@ -4,26 +4,7 @@
 Select the most suitable agent framework for building a Mobile QA Multi-Agent System to automate testing of the Obsidian mobile app on Android.
 
 ---
-
 ## Frameworks Evaluated
-
-### 1. Google Agent Development Kit (ADK)
-- **Type**: General-purpose multi-agent orchestration framework
-- **Language**: Python 3.10+
-- **LLM Support**: Gemini (free tier available), also supports other LLMs via LiteLLM
-- **Documentation**: Excellent, with tutorials and examples
-- **GitHub Stars**: Growing rapidly since April 2025 release
-
-### 2. Simular Agent S3
-- **Type**: Computer-use agent framework specialized for GUI automation
-- **Language**: Python
-- **LLM Support**: Requires OpenAI/Anthropic + UI-TARS grounding model
-- **Performance**: State-of-the-art on OSWorld (69.9%), AndroidWorld (71.6%)
-- **GitHub Stars**: 8.6k+
-
----
-
-## Evaluation Criteria
 
 | Criteria | Google ADK | Agent S3 |
 |----------|------------|----------|
