@@ -7,12 +7,12 @@ A multi-agent system for automated mobile QA testing of the Obsidian app on Andr
 ## Demo Video
 
 <div align="center">
-  <a href="https://saluki-my.sharepoint.com/:v:/g/personal/taminul_islam_siu_edu/IQC46B7lLo-bTZaWxiecEb0dAXQeOLVHXKWCa53rfUx1gUo?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=VoZaQJ">
+  <a>
     <img src="https://img.shields.io/badge/▶_WATCH_DEMO_VIDEO-Click_to_Play-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=282828" alt="Watch Demo Video" width="400"/>
   </a>
-  <br><br>
+  <br>
   <a href="https://saluki-my.sharepoint.com/:v:/g/personal/taminul_islam_siu_edu/IQC46B7lLo-bTZaWxiecEb0dAXQeOLVHXKWCa53rfUx1gUo?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=VoZaQJ">
-    <img src="https://via.placeholder.com/640x360/1a1a2e/FFFFFF?text=📱+Mobile+QA+Agent+Demo%0A%0A▶+Click+to+Play" alt="Demo Video Thumbnail"/>
+    <img src="./screenshots/demo.png" alt="Demo Video Thumbnail"/>
   </a>
   <p><i>Click the image above to watch the demo video</i></p>
 </div>
