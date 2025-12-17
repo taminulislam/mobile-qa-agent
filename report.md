@@ -3,6 +3,40 @@
 ## Objective
 Select the most suitable agent framework for building a Mobile QA Multi-Agent System to automate testing of the Obsidian mobile app on Android.
 
+
+## Architecture with Google ADK
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     SUPERVISOR AGENT                        │
+│  • Orchestrates test execution                              │
+│  • Manages Planner and Executor coordination                │
+│  • Logs results (Pass/Fail)                                 │
+│  • Distinguishes step failures vs test assertion failures   │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+          ┌───────────────┴───────────────┐
+          ▼                               ▼
+┌─────────────────────┐       ┌─────────────────────┐
+│   PLANNER AGENT     │       │   EXECUTOR AGENT    │
+│                     │       │                     │
+│ • Analyzes screen   │       │ • Executes ADB      │
+│ • Decides actions   │◄─────►│   commands          │
+│ • Uses Gemini       │       │ • Captures screens  │
+│   vision            │       │ • Reports status    │
+└─────────────────────┘       └─────────────────────┘
+                                        │
+                                        ▼
+                              ┌─────────────────────┐
+                              │   ADB TOOLS         │
+                              │ • tap(x, y)         │
+                              │ • type_text(str)    │
+                              │ • screenshot()      │
+                              │ • swipe()           │
+                              │ • press_back()      │
+                              └─────────────────────┘
+```
+
 ---
 ## Frameworks Evaluated
 
@@ -39,41 +73,6 @@ While Agent S3 achieves impressive benchmarks on AndroidWorld (71.6% accuracy), 
 - **Cost**: Requires paid API keys (OpenAI/Anthropic) for the main reasoning model
 - **Overkill for Task**: Agent S3 is optimized for complex, long-horizon tasks; our QA tests are relatively focused
 - **Single-Agent Focus**: While powerful, it doesn't naturally support the multi-agent Supervisor-Planner-Executor pattern requested
-
----
-
-## Architecture with Google ADK
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     SUPERVISOR AGENT                        │
-│  • Orchestrates test execution                              │
-│  • Manages Planner and Executor coordination                │
-│  • Logs results (Pass/Fail)                                 │
-│  • Distinguishes step failures vs test assertion failures   │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-          ┌───────────────┴───────────────┐
-          ▼                               ▼
-┌─────────────────────┐       ┌─────────────────────┐
-│   PLANNER AGENT     │       │   EXECUTOR AGENT    │
-│                     │       │                     │
-│ • Analyzes screen   │       │ • Executes ADB      │
-│ • Decides actions   │◄─────►│   commands          │
-│ • Uses Gemini       │       │ • Captures screens  │
-│   vision            │       │ • Reports status    │
-└─────────────────────┘       └─────────────────────┘
-                                        │
-                                        ▼
-                              ┌─────────────────────┐
-                              │   ADB TOOLS         │
-                              │ • tap(x, y)         │
-                              │ • type_text(str)    │
-                              │ • screenshot()      │
-                              │ • swipe()           │
-                              │ • press_back()      │
-                              └─────────────────────┘
-```
 
 ---
 
