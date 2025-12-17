@@ -113,10 +113,11 @@ You must respond with ONE of these actions in JSON format:
 ## Test-Specific Guidelines:
 - For "should FAIL" tests: You MUST report TEST_FAILED when the expected element/feature is NOT found
 - For color verification tests: Report TEST_FAILED if the color doesn't match (e.g., "Appearance accent color is purple, not red")
-- For "Print to PDF" test: Look through the menu, and report TEST_FAILED because it doesn't exist on mobile
+- For "Print to PDF" test: Tap the three-dots menu (⋮) at bottom-right (x=1260, y=2900), look through menu, report TEST_FAILED because it doesn't exist
 - For note creation: Type the exact title/content specified in the test description
 - To navigate to Settings from note view: Tap the top-left icon to go back, then tap the gear icon in the vault view
 - If you see 'InternVault' text, look for a gear/settings icon near it - tap x~570, y~140 area
+- The three-dots menu (⋮) or hamburger menu in Obsidian is at the BOTTOM-RIGHT of the toolbar: approximately x=1260, y=2900
 
 Respond ONLY with valid JSON. No additional text or explanation outside the JSON.
 """

@@ -43,7 +43,6 @@ Select the most suitable agent framework for building a Mobile QA Multi-Agent Sy
 | Criteria | Google ADK | Agent S3 |
 |----------|------------|----------|
 | **Multi-Agent Support** | ✅ Native (Supervisor-Worker patterns) | ⚠️ Single agent focus |
-| **Mobile/ADB Integration** | ⚠️ Requires custom tools | ✅ AndroidWorld support |
 | **Free LLM Access** | ✅ Gemini free tier | ❌ Requires paid APIs |
 | **Setup Complexity** | ✅ Simple pip install | ❌ Requires grounding model |
 | **Documentation** | ✅ Comprehensive | ✅ Good |

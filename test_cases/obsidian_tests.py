@@ -115,11 +115,11 @@ TEST_APPEARANCE_ICON_COLOR = TestCase(
 # Test Case 4: Find Print to PDF button (Should FAIL)
 TEST_PRINT_TO_PDF = TestCase(
     name="test_print_to_pdf",
-    description="Find and click the 'Print to PDF' button in the main file menu. Steps: 1) Tap the hamburger menu (3 horizontal lines) at bottom right 2) Look through the menu options for 'Print to PDF' 3) It does NOT exist in mobile - report TEST_FAILED.",
+    description="Find and click the 'Print to PDF' button in the main file menu. Steps: 1) Tap the three-dots menu icon (⋮) at EXACT coordinates (x=1260, y=2900) - this is the bottom-right corner of the toolbar 2) Look through the menu options for 'Print to PDF' 3) It does NOT exist in mobile - report TEST_FAILED.",
     expected_result="The test should FAIL because 'Print to PDF' feature does not exist in the mobile version's menu.",
     should_pass=False,
     steps=[
-        "Tap the hamburger menu icon (3 horizontal lines) at the bottom right of the screen",
+        "Tap the three-dots menu icon (⋮) at EXACT coordinates (x=1260, y=2900) in bottom-right",
         "Look through all menu options for 'Print to PDF'",
         "The option does NOT exist in the mobile version",
         "Report TEST_FAILED because 'Print to PDF' was not found in the menu"
