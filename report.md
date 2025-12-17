@@ -22,11 +22,11 @@ Select the most suitable agent framework for building a Mobile QA Multi-Agent Sy
 
 ### Primary Reasons
 
-1. **Native Multi-Agent Architecture**: ADK is specifically ==designed for building multi-agent systems with clear patterns for agent coordination, delegation, and communication.== This directly aligns with the Supervisor-Planner-Executor architecture required by this challenge.
+1. **Native Multi-Agent Architecture**: ADK is specifically <mark>designed for building multi-agent systems with clear patterns for agent coordination, delegation, and communication.</mark> This directly aligns with the Supervisor-Planner-Executor architecture required by this challenge.
 
-2. **Free Gemini API Access**: ADK integrates seamlessly with Google's Gemini models, which ==offer a generous free tier.== This eliminates API costs during development and testing.
+2. **Free Gemini API Access**: ADK integrates seamlessly with Google's Gemini models, which <mark>offer a generous free tier.</mark> This eliminates API costs during development and testing.
 
-3. **Flexibility for Custom Tools**: ADK's tool system allows ==easy integration of custom ADB commands for Android emulator== interaction. We can define tap, swipe, type, and screenshot tools that the agents can use.
+3. **Flexibility for Custom Tools**: ADK's tool system allows <mark>easy integration of custom ADB commands for Android emulator</mark> interaction. We can define tap, swipe, type, and screenshot tools that the agents can use.
 
 4. **Simpler Setup**: A single `pip install google-adk` compared to Agent S3's requirement for multiple model endpoints (main LLM + UI-TARS grounding model).
 
