@@ -34,9 +34,9 @@ This project implements a **Supervisor-Planner-Executor** multi-agent architectu
 
 ```
 +-------------------------------------------------------------+
-|                     SUPERVISOR AGENT                         |
-|  - Orchestrates test execution                               |
-|  - Manages agent coordination                                |
+|                     SUPERVISOR AGENT                        |
+|  - Orchestrates test execution                              |
+|  - Manages agent coordination                               |
 |  - Logs final results (Pass/Fail)                           |
 |  - Distinguishes step failures vs test assertion failures   |
 +-----------------------------+-------------------------------+

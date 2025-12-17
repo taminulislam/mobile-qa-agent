@@ -22,15 +22,14 @@ Select the most suitable agent framework for building a Mobile QA Multi-Agent Sy
 
 ### Primary Reasons
 
-1. **Native Multi-Agent Architecture**: ADK is specifically designed for building multi-agent systems with clear patterns for agent coordination, delegation, and communication. This directly aligns with the Supervisor-Planner-Executor architecture required by this challenge.
+1. **Native Multi-Agent Architecture**: ADK is specifically ==designed for building multi-agent systems with clear patterns for agent coordination, delegation, and communication.== This directly aligns with the Supervisor-Planner-Executor architecture required by this challenge.
 
-2. **Free Gemini API Access**: ADK integrates seamlessly with Google's Gemini models, which offer a generous free tier. This eliminates API costs during development and testing.
+2. **Free Gemini API Access**: ADK integrates seamlessly with Google's Gemini models, which ==offer a generous free tier.== This eliminates API costs during development and testing.
 
-3. **Flexibility for Custom Tools**: ADK's tool system allows easy integration of custom ADB commands for Android emulator interaction. We can define tap, swipe, type, and screenshot tools that the agents can use.
+3. **Flexibility for Custom Tools**: ADK's tool system allows ==easy integration of custom ADB commands for Android emulator== interaction. We can define tap, swipe, type, and screenshot tools that the agents can use.
 
 4. **Simpler Setup**: A single `pip install google-adk` compared to Agent S3's requirement for multiple model endpoints (main LLM + UI-TARS grounding model).
 
-5. **Production-Ready Design**: ADK is the same framework powering Google's internal agent products (Agentspace, Customer Engagement Suite), indicating enterprise-grade reliability.
 
 ### Why Not Agent S3?
 
@@ -47,8 +46,8 @@ While Agent S3 achieves impressive benchmarks on AndroidWorld (71.6% accuracy), 
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     SUPERVISOR AGENT                         │
-│  • Orchestrates test execution                               │
+│                     SUPERVISOR AGENT                        │
+│  • Orchestrates test execution                              │
 │  • Manages Planner and Executor coordination                │
 │  • Logs results (Pass/Fail)                                 │
 │  • Distinguishes step failures vs test assertion failures   │
@@ -83,6 +82,3 @@ While Agent S3 achieves impressive benchmarks on AndroidWorld (71.6% accuracy), 
 Google ADK provides the ideal balance of multi-agent capabilities, ease of use, and cost-effectiveness for this Mobile QA automation project. Its native support for agent hierarchies and tool integration, combined with free Gemini API access, makes it the clear choice for delivering a production-ready solution within the project timeline.
 
 ---
-
-**Author**: Taminul Islam  
-**Date**: 14th December 2025  

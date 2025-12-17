@@ -22,9 +22,9 @@ import re
 logger = setup_logger("PlannerAgent")
 
 # Rate limiting configuration
-API_CALL_DELAY = 1  # Seconds to wait between API calls (paid tier: much higher limits)
-MAX_RETRIES = 3  # Maximum number of retries on rate limit errors
-INITIAL_RETRY_DELAY = 5  # Initial delay for retry (seconds)
+API_CALL_DELAY = 3  # 3 seconds between calls (ensures < 20 req/min)
+MAX_RETRIES = 2     # Fewer retries needed since we won't hit limits often
+INITIAL_RETRY_DELAY = 5  # Short retry if somehow rate limited
 
 # Configure Gemini
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -139,18 +139,24 @@ class PlannerAgent:
         logger.info("PlannerAgent initialized")
     
     def _wait_for_rate_limit(self):
-        """Wait if necessary to respect rate limits."""
+        """Wait between API calls for smooth execution."""
         elapsed = time.time() - self.last_api_call_time
         if elapsed < API_CALL_DELAY:
             wait_time = API_CALL_DELAY - elapsed
-            logger.info(f"Rate limiting: waiting {wait_time:.1f}s before next API call...")
             time.sleep(wait_time)
     
     def _extract_retry_delay(self, error_message: str) -> float:
         """Extract retry delay from error message if present."""
+        # Try to extract "retry in Xs" or "retry_delay { seconds: X }"
         match = re.search(r'retry in (\d+\.?\d*)s', str(error_message))
         if match:
-            return float(match.group(1)) + 2  # Add buffer
+            return float(match.group(1)) + 1  # Add small buffer
+        
+        # Try to extract from "seconds: X" format
+        match = re.search(r'seconds:\s*(\d+)', str(error_message))
+        if match:
+            return float(match.group(1)) + 1
+        
         return INITIAL_RETRY_DELAY
     
     def analyze_and_plan(
